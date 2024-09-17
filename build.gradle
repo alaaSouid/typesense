@@ -59,7 +59,19 @@ dependencies {
 /**********************************************************************************************************************\
  * Test
  **********************************************************************************************************************/
+// Task to start Docker containers of the typesense image
+task dockerComposeUp(type: Exec) {
+    commandLine 'docker-compose', 'up'
+}
+
+// Task to stop Docker containers of the typesense image
+task dockerComposeDown(type: Exec) {
+    commandLine 'docker-compose', 'down'
+}
+
 test {
+    dependsOn dockerComposeUp
+    finalizedBy dockerComposeDown
     useJUnitPlatform()
 }
 
