@@ -26,7 +26,7 @@ sourceCompatibility = 21
 targetCompatibility = 21
 
 group "io.kestra.plugin"
-description 'Plugin template for Kestra'
+description = "This plugin provides Typesense integration tasks for document indexing, retrieval, and searching."
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
@@ -34,6 +34,8 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
+    implementation 'org.typesense:typesense-java:0.9.0'
+
     // Platform
     annotationProcessor enforcedPlatform("io.kestra:platform:$kestraVersion")
     implementation enforcedPlatform("io.kestra:platform:$kestraVersion")
@@ -50,9 +52,7 @@ dependencies {
     // Logs
     compileOnly "org.slf4j:slf4j-api"
 
-    // libs included in the final jar
-    // TODO remove it after using the GitHub template as your plugin may not need it
-    api "com.google.code.gson:gson:2.11.0"
+
 }
 
 
@@ -159,8 +159,8 @@ jar {
     manifest {
         attributes(
                 "X-Kestra-Name": project.name,
-                "X-Kestra-Title": "Template",
-                "X-Kestra-Group": project.group + ".templates",
+                "X-Kestra-Title": "Typesense Plugin",
+                "X-Kestra-Group": project.group + ".typesense",
                 "X-Kestra-Description": project.description,
                 "X-Kestra-Version": project.version
         )
