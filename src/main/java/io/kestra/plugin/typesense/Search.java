@@ -49,6 +49,19 @@ public class Search extends Task implements RunnableTask<Search.Output> {
     private String collectionName;
 
     @Schema(
+        title = "Typesense Host",
+        description = "The host of the Typesense server."
+    )
+    @PluginProperty(dynamic = true)
+    private String typesenseHost;
+
+    @Schema(
+        title = "Typesense Port",
+        description = "The port of the Typesense server."
+    )
+    @PluginProperty(dynamic = true)
+    private Integer typesensePort;
+    @Schema(
         title = "Search query",
         description = "The search query used to find documents."
     )
@@ -74,7 +87,7 @@ public class Search extends Task implements RunnableTask<Search.Output> {
         logger.info("Searching in collection: {} with query: {}", renderedCollectionName, renderedSearchQuery);
 
         // Initialize Typesense client
-        Client client = UtilityMethods.getTypeSenseClient();
+        Client client = UtilityMethods.getTypeSenseClient(typesenseHost, typesensePort);
 
         // Define search parameters
         SearchParameters searchParameters = new SearchParameters()

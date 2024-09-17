@@ -60,18 +60,7 @@ dependencies {
  * Test
  **********************************************************************************************************************/
 // Task to start Docker containers of the typesense image
-task dockerComposeUp(type: Exec) {
-    commandLine 'docker-compose', 'up'
-}
-
-// Task to stop Docker containers of the typesense image
-task dockerComposeDown(type: Exec) {
-    commandLine 'docker-compose', 'down'
-}
-
 test {
-    dependsOn dockerComposeUp
-    finalizedBy dockerComposeDown
     useJUnitPlatform()
 }
 
@@ -88,7 +77,9 @@ dependencies {
     // Platform
     testAnnotationProcessor enforcedPlatform("io.kestra:platform:$kestraVersion")
     testImplementation enforcedPlatform("io.kestra:platform:$kestraVersion")
-
+    // test containers
+    testImplementation "org.testcontainers:testcontainers:1.19.0"
+    testImplementation "org.testcontainers:junit-jupiter:1.19.0"
     // lombok
     testAnnotationProcessor "org.projectlombok:lombok"
     testCompileOnly "org.projectlombok:lombok"

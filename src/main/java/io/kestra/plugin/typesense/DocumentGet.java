@@ -51,6 +51,20 @@ public class DocumentGet extends Task implements RunnableTask<DocumentGet.Output
     @PluginProperty(dynamic = true)
     private String documentId;
 
+    @Schema(
+        title = "Typesense Host",
+        description = "The host of the Typesense server."
+    )
+    @PluginProperty(dynamic = true)
+    private String typesenseHost;
+
+    @Schema(
+        title = "Typesense Port",
+        description = "The port of the Typesense server."
+    )
+    @PluginProperty(dynamic = true)
+    private Integer typesensePort;
+
     @Override
     public Output run(RunContext runContext) throws Exception {
         Logger logger = runContext.logger();
@@ -58,11 +72,13 @@ public class DocumentGet extends Task implements RunnableTask<DocumentGet.Output
         // Render dynamic variables if needed
         String renderedCollectionName = runContext.render(this.collectionName);
         String renderedDocumentId = runContext.render(this.documentId);
+        String typesenseHost = runContext.render(this.typesenseHost);
+        int typesensePort = Integer.parseInt(runContext.render(this.typesensePort.toString()));
 
         logger.info("Retrieving document with ID {} from collection {}", renderedDocumentId, renderedCollectionName);
 
-        // Initialize the Typesense client
-        Client client = UtilityMethods.getTypeSenseClient();
+        // Initialize the Typesense client with dynamic host and port
+        Client client = UtilityMethods.getTypeSenseClient(typesenseHost, typesensePort);
 
         // Retrieve the document by ID from the collection
         Map<String, Object> retrievedDocument = client.collections(renderedCollectionName)
@@ -76,6 +92,7 @@ public class DocumentGet extends Task implements RunnableTask<DocumentGet.Output
             .retrievedDocument(retrievedDocument)
             .build();
     }
+
 
     @Builder
     @Getter

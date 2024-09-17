@@ -43,7 +43,19 @@ public class DocumentIndex extends Task implements RunnableTask<DocumentIndex.Ou
     @PluginProperty(dynamic = true)
     private String collectionName;
 
+    @Schema(
+        title = "Typesense Host",
+        description = "The host of the Typesense server."
+    )
+    @PluginProperty(dynamic = true)
+    private String typesenseHost;
 
+    @Schema(
+        title = "Typesense Port",
+        description = "The port of the Typesense server."
+    )
+    @PluginProperty(dynamic = true)
+    private Integer typesensePort;
 
     @Schema(
         title = "Document to upsert",
@@ -63,7 +75,7 @@ public class DocumentIndex extends Task implements RunnableTask<DocumentIndex.Ou
         logger.debug("Document content: {}", renderedDocument);
 
         // Initialize the Typesense client
-        Client client = UtilityMethods.getTypeSenseClient();
+        Client client = UtilityMethods.getTypeSenseClient(typesenseHost, typesensePort);
         // Use upsert to either insert or update the document in the collection
         Map<String, Object> upsertedDocument = client.collections(renderedCollectionName).documents().upsert(renderedDocument);
 

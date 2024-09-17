@@ -15,9 +15,10 @@ public class UtilityMethods {
         throw new IllegalArgumentException();
     }
 
-    public static Client getTypeSenseClient() {
+    public static Client getTypeSenseClient(String host, int port) {
         List<Node> nodes = new ArrayList<>();
-        nodes.add(new Node("http", "localhost", "8108"));
+        nodes.add(new Node("http", host, String.valueOf(port)));
+
         Configuration configuration = new Configuration(nodes, Duration.ofSeconds(2), "k8pX5hD0793d8YQC5aD1aEPd7VleSuGP");
 
         // Initialize the Typesense client
