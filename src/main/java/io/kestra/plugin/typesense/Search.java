@@ -3,7 +3,6 @@ package io.kestra.plugin.typesense;
 import io.kestra.core.models.annotations.Example;
 import io.kestra.core.models.annotations.Plugin;
 import io.kestra.core.models.annotations.PluginProperty;
-import io.kestra.core.models.tasks.Output;
 import io.kestra.core.models.tasks.RunnableTask;
 import io.kestra.core.runners.RunContext;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,9 +18,6 @@ import org.typesense.model.SearchResult;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Map;
 
 @SuperBuilder
 @ToString
@@ -29,8 +25,8 @@ import java.util.Map;
 @Getter
 @NoArgsConstructor
 @Schema(
-    title = "Search documents in a Typesense collection and save the result as an ION file.",
-    description = "This task searches for documents in a Typesense collection and saves the result in Kestra storage as an ION file."
+    title = "Search documents.",
+    description = "This task searches for documents in a Typesense collection and saves the result in Kestra storage."
 )
 @Plugin(
     examples = {
@@ -61,7 +57,7 @@ public class Search extends Task implements RunnableTask<Search.Output> {
 
     @Schema(
         title = "Output file name",
-        description = "The name of the ION file where search results will be saved."
+        description = "The name of the file where search results will be saved."
     )
     @PluginProperty(dynamic = true)
     private String outputFileName;
@@ -90,12 +86,12 @@ public class Search extends Task implements RunnableTask<Search.Output> {
 
         logger.info("Search completed with [{}]", searchResult.getFound());
 
-        // Create a temporary file for saving search results in ION format
+        // Create a temporary file for saving search results
         File tempFile = File.createTempFile(renderedOutputFileName, ".ion");
 
-        // Write search results to the file (for simplicity, using JSON for the example)
+        // Write search results to the file
         try (FileWriter fileWriter = new FileWriter(tempFile)) {
-            fileWriter.write(searchResult.toString()); // Converting result to a string (or handle as needed)
+            fileWriter.write(searchResult.toString()); // Converting result to a string
         }
 
         // Store the file in Kestra's internal storage
