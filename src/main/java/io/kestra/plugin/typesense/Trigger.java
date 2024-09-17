@@ -1,4 +1,4 @@
-package io.kestra.plugin.templates;
+package io.kestra.plugin.typesense;
 
 import io.kestra.core.models.annotations.Plugin;
 import io.kestra.core.models.conditions.ConditionContext;
@@ -26,12 +26,12 @@ public class Trigger extends AbstractTrigger implements PollingTriggerInterface,
     @Builder.Default
     private final Duration interval = Duration.ofSeconds(60);
 
-    protected Double min = 0.5;
+    protected static final Double MIN = 0.5;
 
     @Override
     public Optional<Execution> evaluate(ConditionContext conditionContext, TriggerContext context) {
         double random = Math.random();
-        if (random < this.min) {
+        if (random < MIN) {
             return Optional.empty();
         }
 
